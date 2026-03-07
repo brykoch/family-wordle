@@ -30,6 +30,7 @@ const screens = {
 const wordGrid       = document.getElementById('word-grid');
 const wordSearch     = document.getElementById('word-search');
 const lockBtn        = document.getElementById('lock-btn');
+const pickFooter     = document.getElementById('pick-footer');
 const readyBtn       = document.getElementById('ready-btn');
 const guessGrid      = document.getElementById('guess-grid');
 const keyboard       = document.getElementById('keyboard');
@@ -134,11 +135,13 @@ function selectWord(word) {
   if (selectedWord === word) {
     selectedWord = '';
     lockBtn.disabled = true;
+    pickFooter.classList.remove('visible');
     return;
   }
 
   selectedWord = word;
   lockBtn.disabled = false;
+  pickFooter.classList.add('visible');
 
   document.querySelectorAll('.word-card').forEach(c => {
     if (c.textContent === word) c.classList.add('selected');
@@ -161,6 +164,7 @@ lockBtn.addEventListener('click', () => {
 wordSearch.addEventListener('input', () => {
   selectedWord = '';
   lockBtn.disabled = true;
+  pickFooter.classList.remove('visible');
   buildWordGrid(wordSearch.value);
 });
 
@@ -640,6 +644,7 @@ function resetGame() {
   requiredPositions = {};
   requiredLetters   = {};
   lockBtn.disabled = true;
+  pickFooter.classList.remove('visible');
   wordSearch.value = '';
   // Re-enable options
   hardModeSwitch.disabled = false;
