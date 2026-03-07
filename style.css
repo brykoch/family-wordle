@@ -1,0 +1,647 @@
+/* ═══════════════════════════════════════════
+   Base & Reset
+═══════════════════════════════════════════ */
+*, *::before, *::after {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+:root {
+  --green:   #6aaa64;
+  --yellow:  #c9b458;
+  --gray:    #787c7e;
+  --empty-border: #d3d6da;
+  --filled-border: #878a8c;
+  --bg: #ffffff;
+  --text: #1a1a1b;
+  --subtext: #787c7e;
+  --header-border: #e6e6e6;
+  --word-card-bg: #f6f6f6;
+  --word-card-selected: #6aaa64;
+  --word-card-selected-text: #ffffff;
+  --btn-primary-bg: #6aaa64;
+  --btn-primary-text: #ffffff;
+  --btn-secondary-bg: #f0f0f0;
+  --btn-secondary-text: #1a1a1b;
+  --key-bg: #d3d6da;
+  --cover-bg: #1a1a1b;
+  --cover-text: #ffffff;
+  --cover-subtext: #aaaaaa;
+  --toast-bg: #1a1a1b;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --green:   #538d4e;
+    --yellow:  #b59f3b;
+    --gray:    #3a3a3c;
+    --empty-border: #3a3a3c;
+    --filled-border: #565758;
+    --bg: #121213;
+    --text: #ffffff;
+    --subtext: #818384;
+    --header-border: #3a3a3c;
+    --word-card-bg: #2a2a2b;
+    --word-card-selected: #538d4e;
+    --word-card-selected-text: #ffffff;
+    --btn-primary-bg: #538d4e;
+    --btn-primary-text: #ffffff;
+    --btn-secondary-bg: #3a3a3c;
+    --btn-secondary-text: #ffffff;
+    --key-bg: #818384;
+    --cover-bg: #000000;
+    --cover-text: #ffffff;
+    --cover-subtext: #818384;
+    --toast-bg: #ffffff;
+  }
+
+  .toast {
+    color: #121213;
+  }
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+}
+
+/* ═══════════════════════════════════════════
+   Screen management
+═══════════════════════════════════════════ */
+.screen {
+  display: none;
+  flex-direction: column;
+  height: 100dvh;
+  height: 100vh; /* fallback */
+  overflow: hidden;
+  padding-left: var(--safe-left);
+  padding-right: var(--safe-right);
+}
+
+.screen.active {
+  display: flex;
+}
+
+/* ═══════════════════════════════════════════
+   App Header
+═══════════════════════════════════════════ */
+.app-header {
+  flex-shrink: 0;
+  text-align: center;
+  padding: calc(12px + var(--safe-top)) 16px 12px;
+  border-bottom: 1px solid var(--header-border);
+}
+
+.app-header--guess {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: calc(10px + var(--safe-top)) 16px 10px;
+}
+
+.app-title {
+  margin: 0;
+  font-size: 1.6rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.app-subtitle {
+  margin: 4px 0 0;
+  font-size: 0.85rem;
+  color: var(--subtext);
+}
+
+/* ═══════════════════════════════════════════
+   Hard Mode Toggle
+═══════════════════════════════════════════ */
+.hard-mode-toggle {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--header-border);
+}
+
+.toggle-label {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.toggle-hint {
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: var(--subtext);
+}
+
+.toggle-switch {
+  position: relative;
+  width: 48px;
+  height: 28px;
+  background: var(--empty-border);
+  border: none;
+  border-radius: 14px;
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.2s;
+  touch-action: manipulation;
+  flex-shrink: 0;
+}
+
+.toggle-switch[aria-checked="true"] {
+  background: var(--btn-primary-bg);
+}
+
+.toggle-switch.disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.toggle-knob {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 22px;
+  height: 22px;
+  background: #ffffff;
+  border-radius: 50%;
+  transition: transform 0.2s;
+  pointer-events: none;
+}
+
+.toggle-switch[aria-checked="true"] .toggle-knob {
+  transform: translateX(20px);
+}
+
+/* ═══════════════════════════════════════════
+   SCREEN 1 — Word Picker
+═══════════════════════════════════════════ */
+.search-wrap {
+  flex-shrink: 0;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--header-border);
+}
+
+#word-search {
+  width: 100%;
+  padding: 10px 14px;
+  font-size: 16px; /* prevents iOS auto-zoom */
+  border: 1.5px solid var(--empty-border);
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--text);
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+#word-search:focus {
+  border-color: var(--green);
+}
+
+.word-grid {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 12px 16px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(88px, 1fr));
+  gap: 8px;
+  align-content: start;
+}
+
+.word-card {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--word-card-bg);
+  border: 1.5px solid transparent;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text);
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: background 0.15s, border-color 0.15s, color 0.15s, transform 0.1s;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.word-card:active {
+  transform: scale(0.95);
+}
+
+.word-card.selected {
+  background: var(--word-card-selected);
+  border-color: var(--word-card-selected);
+  color: var(--word-card-selected-text);
+}
+
+.word-card.hidden {
+  display: none;
+}
+
+.sticky-footer {
+  flex-shrink: 0;
+  padding: 12px 16px calc(12px + var(--safe-bottom));
+  border-top: 1px solid var(--header-border);
+  background: var(--bg);
+}
+
+/* ═══════════════════════════════════════════
+   SCREEN 2 — Cover
+═══════════════════════════════════════════ */
+#screen-cover {
+  background: var(--cover-bg);
+  align-items: center;
+  justify-content: center;
+}
+
+.cover-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 32px 32px calc(32px + var(--safe-bottom));
+  text-align: center;
+  max-width: 360px;
+}
+
+.lock-icon {
+  font-size: 4rem;
+  line-height: 1;
+}
+
+.cover-title {
+  margin: 0;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--cover-text);
+}
+
+.cover-body {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--cover-subtext);
+  line-height: 1.5;
+}
+
+/* ═══════════════════════════════════════════
+   SCREEN 3 — Guessing
+═══════════════════════════════════════════ */
+#screen-guess {
+  justify-content: space-between;
+  position: relative;
+}
+
+.guess-grid {
+  flex: 1;
+  display: grid;
+  grid-template-rows: repeat(6, 1fr);
+  gap: 5px;
+  padding: 10px 16px;
+  max-width: 360px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.guess-row {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 5px;
+}
+
+.tile {
+  aspect-ratio: 1;
+  border: 2px solid var(--empty-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(1.2rem, 5vw, 1.8rem);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  color: var(--text);
+  background: var(--bg);
+  transition: border-color 0.05s;
+  position: relative;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.tile[data-letter] {
+  border-color: var(--filled-border);
+}
+
+/* Pop animation when a letter is typed */
+.tile.pop {
+  animation: pop 0.1s ease-in-out;
+}
+
+@keyframes pop {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.12); }
+  100% { transform: scale(1); }
+}
+
+/* Flip-in reveal animation */
+.tile.flip {
+  animation: flip 0.5s ease forwards;
+}
+
+@keyframes flip {
+  0%   { transform: rotateX(0deg); }
+  50%  { transform: rotateX(-90deg); background: transparent; border-color: transparent; }
+  100% { transform: rotateX(0deg); }
+}
+
+/* Shake on invalid guess */
+.guess-row.shake {
+  animation: shake 0.5s ease;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  15%       { transform: translateX(-5px); }
+  30%       { transform: translateX(5px); }
+  45%       { transform: translateX(-5px); }
+  60%       { transform: translateX(5px); }
+  75%       { transform: translateX(-4px); }
+  90%       { transform: translateX(4px); }
+}
+
+/* Bounce on win */
+.tile.bounce {
+  animation: bounce 0.5s ease forwards;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  40%       { transform: translateY(-20px); }
+  70%       { transform: translateY(-10px); }
+}
+
+/* Tile color states (applied after flip) */
+.tile.correct  { background: var(--green);  border-color: var(--green);  color: #fff; }
+.tile.present  { background: var(--yellow); border-color: var(--yellow); color: #fff; }
+.tile.absent   { background: var(--gray);   border-color: var(--gray);   color: #fff; }
+
+/* ── Toast ── */
+.toast {
+  position: absolute;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--toast-bg);
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s;
+  white-space: nowrap;
+  z-index: 100;
+}
+
+.toast.show {
+  opacity: 1;
+}
+
+/* ── Keyboard ── */
+.keyboard {
+  flex-shrink: 0;
+  padding: 8px 8px calc(8px + var(--safe-bottom));
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-width: 500px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.key-row {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+}
+
+.key {
+  height: 58px;
+  min-width: 36px;
+  flex: 1;
+  max-width: 46px;
+  border: none;
+  border-radius: 5px;
+  background: var(--key-bg);
+  color: var(--text);
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  cursor: pointer;
+  touch-action: manipulation;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.1s, color 0.1s;
+  user-select: none;
+  -webkit-user-select: none;
+  padding: 0;
+}
+
+.key.wide {
+  flex: 1.5;
+  max-width: 66px;
+  font-size: 0.75rem;
+}
+
+.key:active {
+  filter: brightness(0.85);
+}
+
+.key.correct { background: var(--green);  color: #fff; }
+.key.present { background: var(--yellow); color: #fff; }
+.key.absent  { background: var(--gray);   color: #fff; }
+
+/* ═══════════════════════════════════════════
+   SCREEN 4 — Results
+═══════════════════════════════════════════ */
+#screen-result {
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.result-card {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 24px 24px calc(24px + var(--safe-bottom));
+  max-width: 400px;
+  width: 100%;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.result-emoji {
+  font-size: 3.5rem;
+  line-height: 1;
+}
+
+.result-title {
+  margin: 0;
+  font-size: 1.6rem;
+  font-weight: 700;
+}
+
+.result-title:focus {
+  outline: none;
+}
+
+.result-body {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--subtext);
+  line-height: 1.5;
+}
+
+.result-grid-emoji {
+  font-family: monospace;
+  font-size: 1.4rem;
+  line-height: 1.3;
+  letter-spacing: 0.05em;
+  white-space: pre;
+}
+
+.result-actions {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.final-board {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 16px calc(24px + var(--safe-bottom));
+}
+
+.guess-grid--small {
+  max-width: 280px;
+  gap: 4px;
+}
+
+.guess-grid--small .tile {
+  font-size: 1rem;
+  border-width: 1.5px;
+}
+
+/* ═══════════════════════════════════════════
+   Buttons
+═══════════════════════════════════════════ */
+.btn {
+  min-height: 50px;
+  padding: 0 24px;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  touch-action: manipulation;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: filter 0.1s, transform 0.1s;
+  user-select: none;
+  -webkit-user-select: none;
+  text-decoration: none;
+}
+
+.btn:active {
+  filter: brightness(0.88);
+  transform: scale(0.97);
+}
+
+.btn:disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.btn-primary {
+  background: var(--btn-primary-bg);
+  color: var(--btn-primary-text);
+  width: 100%;
+}
+
+.btn-secondary {
+  background: var(--btn-secondary-bg);
+  color: var(--btn-secondary-text);
+  width: 100%;
+}
+
+.btn-ghost {
+  background: none;
+  color: var(--subtext);
+  border: 1.5px solid var(--empty-border);
+  min-width: 120px;
+}
+
+.btn-large {
+  min-height: 60px;
+  font-size: 1.1rem;
+  width: 100%;
+  max-width: 320px;
+}
+
+/* ═══════════════════════════════════════════
+   Utility
+═══════════════════════════════════════════ */
+.hidden {
+  display: none !important;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Empty state for word picker */
+.no-results {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: var(--subtext);
+  padding: 32px 0;
+  font-size: 0.95rem;
+}

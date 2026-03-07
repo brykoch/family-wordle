@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#121213" media="(prefers-color-scheme: dark)" />
+  <title>Family Wordle</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Screen-reader live region for announcements -->
+  <div id="sr-announcer" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+
+  <!-- ══════════════════════════════════════════
+       SCREEN 1 — Word Selection (Word Setter)
+  ══════════════════════════════════════════ -->
+  <div id="screen-pick" class="screen active">
+    <header class="app-header">
+      <h1 class="app-title">Family Wordle</h1>
+      <p class="app-subtitle">Pick a secret word for the guesser</p>
+    </header>
+
+    <div class="hard-mode-toggle">
+      <label class="toggle-label" for="hard-mode-switch">
+        Hard Mode
+        <span class="toggle-hint">Must use revealed hints</span>
+      </label>
+      <button
+        id="hard-mode-switch"
+        class="toggle-switch"
+        role="switch"
+        aria-checked="false"
+        aria-label="Hard Mode"
+      >
+        <span class="toggle-knob"></span>
+      </button>
+    </div>
+
+    <div class="search-wrap">
+      <input
+        id="word-search"
+        type="search"
+        placeholder="Search words…"
+        autocomplete="off"
+        autocorrect="off"
+        autocapitalize="off"
+        spellcheck="false"
+      />
+    </div>
+
+    <div id="word-grid" class="word-grid" role="list"></div>
+
+    <div class="sticky-footer" id="pick-footer">
+      <button id="lock-btn" class="btn btn-primary" disabled>
+        Lock In This Word
+      </button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       SCREEN 2 — Cover / Hand-off
+  ══════════════════════════════════════════ -->
+  <div id="screen-cover" class="screen">
+    <div class="cover-content">
+      <div class="lock-icon" aria-hidden="true">🔒</div>
+      <h2 class="cover-title">Word is locked!</h2>
+      <p class="cover-body">Hand the phone to the guesser, then tap the button below.</p>
+      <button id="ready-btn" class="btn btn-primary btn-large">
+        I'm Ready to Guess!
+      </button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       SCREEN 3 — Guessing
+  ══════════════════════════════════════════ -->
+  <div id="screen-guess" class="screen">
+    <header class="app-header app-header--guess">
+      <h1 class="app-title">Family Wordle</h1>
+    </header>
+
+    <div id="guess-grid" class="guess-grid" role="grid" aria-label="Guess board">
+      <!-- 6 rows × 5 tiles, built by JS -->
+    </div>
+
+    <div id="toast" class="toast" aria-live="polite"></div>
+
+    <div id="keyboard" class="keyboard" role="group" aria-label="On-screen keyboard">
+      <!-- built by JS -->
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       SCREEN 4 — Results
+  ══════════════════════════════════════════ -->
+  <div id="screen-result" class="screen">
+    <header class="app-header">
+      <h1 class="app-title">Family Wordle</h1>
+    </header>
+
+    <div class="result-card" id="result-card">
+      <div id="result-emoji" class="result-emoji" aria-hidden="true"></div>
+      <h2 id="result-title" class="result-title"></h2>
+      <p id="result-body" class="result-body"></p>
+      <div id="result-grid-emoji" class="result-grid-emoji"></div>
+      <button id="share-btn" class="btn btn-secondary">Copy Result</button>
+      <div class="result-actions">
+        <button id="viewboard-btn" class="btn btn-ghost">View Board</button>
+        <button id="playagain-btn" class="btn btn-primary">Play Again</button>
+      </div>
+    </div>
+
+    <!-- Final guess grid shown when "View Board" is tapped -->
+    <div id="final-board" class="final-board hidden">
+      <div id="final-guess-grid" class="guess-grid guess-grid--small" role="grid"></div>
+      <button id="playagain2-btn" class="btn btn-primary" style="margin-top:1.5rem">Play Again</button>
+    </div>
+  </div>
+
+  <script src="words.js"></script>
+  <script src="valid-guesses.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
