@@ -80,10 +80,12 @@ hardModeSwitch.addEventListener('click', () => {
 });
 
 // ── Grade Filtering ──────────────────────
+const GRADE_LEVELS = [2, 4, 8];
+
 function getWordsForGrade(grade) {
   const words = [];
-  for (let g = 2; g <= grade; g++) {
-    if (WORD_GRADES[g]) words.push(...WORD_GRADES[g]);
+  for (const g of GRADE_LEVELS) {
+    if (g <= grade && WORD_GRADES[g]) words.push(...WORD_GRADES[g]);
   }
   return words.sort();
 }

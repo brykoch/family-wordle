@@ -1,7 +1,7 @@
-// Family-friendly 5-letter words tagged by reading grade level.
+// Curated 5-letter words tagged by reading grade level.
 // Grade 2: everyday words a 7-8 year old reads confidently
-// Grade 3: words encountered in school reading by age 8-9
-// Grade 4: more advanced vocabulary for ages 9-10
+// Grade 4: words encountered in school reading by age 8-10
+// Grade 8: advanced vocabulary for ages 13+
 // Selecting a grade includes that grade and all below it.
 
 const WORD_GRADES = {
@@ -70,7 +70,7 @@ const WORD_GRADES = {
     "ZEBRA"
   ],
 
-  3: [
+  4: [
     "AGENT", "ALERT", "ALIKE", "ALLEY", "ALLOW", "APART", "APPLY", "APRON",
     "ATLAS", "AVOID", "AWARD", "AWARE",
     "BADGE", "BANJO", "BASIC", "BATCH", "BEAST", "BEGAN", "BEGIN",
@@ -115,25 +115,34 @@ const WORD_GRADES = {
     "ZESTY", "ZONAL"
   ],
 
-  4: [
+  8: [
     "ALTAR", "ANKLE", "ANNEX", "AVAIL",
-    "BASIN", "BLEAT", "BOAST", "BRIDE", "BREAM", "BULGE",
-    "CLAMP", "CLANG", "CLANK", "CLASH", "CLASP", "CUBIC",
-    "DECOR", "DELTA", "DERBY", "DEVIL",
-    "EMOTE", "EVADE", "EXCEL",
-    "FLEET",
-    "GROPE",
-    "HUMID",
-    "PLUMB", "PRIME",
-    "RABBI", "RADAR", "REALM",
-    "SOLAR", "STEEL", "STASH",
-    "VAPOR", "VICAR",
-    "MYRRH"
+    "BASIN", "BLEAT", "BLUFF", "BOAST", "BRIDE", "BREAM", "BRUTE", "BULGE",
+    "CHAOS", "CLAMP", "CLANG", "CLANK", "CLASH", "CLASP", "CREED", "CRYPT", "CUBIC",
+    "DECOR", "DELTA", "DERBY", "DEVIL", "DWELT",
+    "ELUDE", "EMOTE", "EVADE", "EXCEL",
+    "FEIGN", "FIEND", "FLEET",
+    "GHOUL", "GLYPH", "GRIPE", "GUILE",
+    "HEIST", "HUMID",
+    "IRONY",
+    "KNACK",
+    "LUCID", "LUNGE", "LYRIC",
+    "MOOSE", "MYRRH",
+    "NICHE",
+    "ONSET",
+    "PIQUE", "PLUMB", "PRIME", "PROWL",
+    "RABBI", "RADAR", "REALM", "ROGUE",
+    "SIEGE", "SOLAR", "STEEL", "STASH", "STOIC",
+    "TAUNT", "TRYST",
+    "USURP",
+    "VAPOR", "VICAR", "VIPER",
+    "WRATH",
+    "YIELD"
   ]
 };
 
 // Flat sorted array of all words (used throughout the app)
-const WORDS = [...WORD_GRADES[2], ...WORD_GRADES[3], ...WORD_GRADES[4]].sort();
+const WORDS = [...WORD_GRADES[2], ...WORD_GRADES[4], ...WORD_GRADES[8]].sort();
 
 // Quick lookup: word → grade
 const WORD_GRADE_MAP = {};
