@@ -81,11 +81,20 @@ html, body {
 .screen {
   display: none;
   flex-direction: column;
-  height: 100dvh;
   height: 100vh; /* fallback */
+  height: 100dvh;
   overflow: hidden;
   padding-left: var(--safe-left);
   padding-right: var(--safe-right);
+}
+
+#screen-pick {
+  height: 100svh;
+  height: 100dvh; /* fallback for older browsers */
+}
+
+@supports (height: 100svh) {
+  #screen-pick { height: 100svh; }
 }
 
 .screen.active {
