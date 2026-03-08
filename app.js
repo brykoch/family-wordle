@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════
-   Family Wordle — app.js
+   Wordbaffle — app.js
    Screens: pick → cover → guess → result
 ═══════════════════════════════════════════ */
 
@@ -589,7 +589,7 @@ shareBtn.addEventListener('click', () => {
   const won = guesses.length > 0 && guesses[guesses.length - 1].every(e => e.state === 'correct');
   const score = won ? guessCount : 'X';
   const mode = hardMode ? '*' : '';
-  const text = `Family Wordle ${score}/${MAX_GUESSES}${mode}\n\n${buildEmojiGrid()}`;
+  const text = `Wordbaffle ${score}/${MAX_GUESSES}${mode}\n\n${buildEmojiGrid()}`;
 
   if (navigator.share) {
     navigator.share({ text }).catch(() => copyText(text));
